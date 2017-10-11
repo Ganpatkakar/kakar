@@ -1,0 +1,135 @@
+.header-content {
+  margin-left: 200px;
+}
+.side-navbar {
+  display: block;
+  width: 200px;
+  position: fixed;
+  overflow: hidden;
+  bottom: 0;
+  min-height: 100%;
+}
+
+.sidebar {
+  top: 0;
+  left: 0;
+  background: #009788;
+  min-height: 100%;
+  z-index: 3;
+  transition: width .3s,left .3s cubic-bezier(.27,.63,.5,1.05);
+}
+
+.logo {
+  color: #fff;
+  font-size: 24px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  position: fixed;
+  z-index: 999;
+  background-color: #009788;
+  width: 200px;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+  background-color: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: rgba(0,0,0,0)
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0,0,0,0)
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0,0,0,0)
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #F90;
+  border: 0px solid rgba(0,0,0,0)
+}
+
+.scrollbar{
+  padding-top: 50px;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.user-info {
+  height: 150px;
+  background: url(images/dashboard_image.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+}
+
+.dashboard-menu {
+  
+}
+
+.menu-list {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.menu {
+  min-height: 50px;
+  line-height: 50px;
+  float: left;
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.menu .glyphicon {
+  color: #fff;
+  padding: 15px;
+}
+
+.menu a{
+  list-style: none;
+  text-decoration: none;
+  color: #fff;
+}
+
+.main-container {
+  margin-left: 200px;
+}
+.page-content {
+  padding-left: 30px;
+}
+
+.user-details {
+  background: rgba(0,0,0,.3);
+  width: 100%;
+  display: block;
+  height: inherit
+}
+
+.user-name {
+  text-align: center;
+}
+
+.profile-pic {
+  background: url(images/login-cover.jpg);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-size: cover;
+  position: relative;
+}
+
+.user-profile-pic {
+  padding: 20px 0px;
+  position: relative;
+  width: 70px;
+  margin: auto;
+}
