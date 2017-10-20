@@ -1,0 +1,59 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="myApp">
+
+<main class="main-container">
+    <div class="container-fluid">
+        <div class="row login-overlay">
+            <div class="login-header-background">
+                Kakar
+            </div>
+            <div class="form-content">
+                <div class="user-profile-pic text-center">
+                    <div class="user-icon">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </div>
+                </div>
+                <h3 class="text-center">Login</h3>
+                <form class="login-form" name="login-form">
+                    <div class="form-group">
+                        <lable class="">User Name *</lable>
+                        <input type="text" name="username" ng-model="username" palceholder="Enter User Name"
+                               class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <lable class="">Password *</lable>
+                        <input type="password" name="userpassword" ng-model="userpassword"
+                               palceholder="Enter User Password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <lable class="">
+                        <input type="checkbox" name="rememberme" ng-model="rememberMe"
+                               class="" required> Remember Me</lable>
+                    </div>
+                    <div class="form-group text-right">
+                        <a href="signup.html">Sign Up Here</a>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-success">LOGIN</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="footer-login">
+                <div class="col-sm-6 text-left">KAKAR @2017</div>
+                <div class="col-sm-6 text-right">All Rights Reserved by Kakar</div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

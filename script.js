@@ -11,16 +11,10 @@ app.config(function ($routeProvider) {
             controller: "calendarController"
         })
         .when("/blank", {
-            templateUrl: "blank.htm"
+            templateUrl: "blank.html"
         })
         .when("/404", {
-            templateUrl: "404.htm"
-        })
-        .when("/login", {
-            templateUrl: "login.htm"
-        })
-        .when("/signup", {
-            templateUrl: "signup.htm"
+            templateUrl: "404.html"
         })
         .when("/profile", {
             templateUrl: "profile.htm"
@@ -38,6 +32,46 @@ app.controller("chartController", function ($scope) {
     $scope.pageName = "ChartJs";
 });
 
-app.controller("calendarController", function ($scope) {
+app.controller("calendarController", ['$scope', '$document', '$compile',  function ($scope, $document, $compile) {
     $scope.pageName = "Calendar JS";
-});
+    $scope.eventData = [];
+    $scope.editEventS = false;
+    $scope.showEventpopup = false;
+    $scope.dataTime = new Date();
+
+    $scope.iseventRegistered = function () {
+        for (var i = 0; i < $scope.eventData.length; i++) {
+             var ab = $document.find("[data-id='"+$scope.eventData[i].eventDate+"']");
+             ab.addClass("event-registered");
+        }
+    };
+
+    $scope.iseventRegistered();
+
+    $scope.nextPrevMonth = function(){
+        var $el = $document.find("[id='calendar']");
+        $compile($el)($scope);
+        $scope.iseventRegistered();
+    };
+
+    $scope.assignEvent = function (item) {
+        $scope.eventDate = $(angular.element(item)[0]).data('id');
+        $scope.showEventpopup = true;
+        $scope.dataTime = $scope.eventDate + " 00:00:00 AM";
+        $scope.eventVal = "";
+    };
+
+    $scope.submitEvent = function () {
+        if ($scope.eventForm.$valid) {
+            var currentEventVal = {
+                "eventDate": $scope.eventDate,
+                "eventTime": $scope.dataTime,
+                "eventDetail": $scope.eventVal
+            };
+            $scope.eventData.push(currentEventVal);
+            console.log($scope.eventData);
+            $scope.showEventpopup = false;
+            $scope.iseventRegistered();
+        }
+    };
+}]);
