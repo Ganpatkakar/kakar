@@ -5,24 +5,13 @@ function chartCalling(chart) {
         $('#' + chart.container).css({
             'height': chart.hei + 100
         });
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.wid, chart.hei, chart.container);
-        var verticaldevisions = chart.yaxis.max;
+        var verticaldevisions = (chart.yaxis.max - chart.yaxis.min) / chart.yaxis.difference;
+        console.log("verticaldevisions" + verticaldevisions);
         drawGrid(chart.chartnumber, verticaldevisions, ctx, chart.data);
         var canvas = 'canvas' + chart.chartnumber;
-        var maxdata = [];
-        maxdata[0] = maxdata[1] = chart.data[0].datapoints[0].y;
-        for (var i = 0; i < chart.data.length; i++) {
-            for (var j = 0; j < chart.data[i].datapoints.length; j++) {
-                if (chart.data[i].datapoints[j].y < maxdata[0]) {
-                    maxdata[0] = chart.data[i].datapoints[j].y;
-                }
-                if (chart.data[i].datapoints[j].y > maxdata[1]) {
-                    maxdata[1] = chart.data[i].datapoints[j].y;
-                }
-            }
-        }
-        //console.log(maxdata);
+        var maxdata = [chart.yaxis.min, chart.yaxis.max];
         var linecord = [];
         for (var i = 0; i < chart.data.length; i++) {
             drawGraphicLinear(canvas, ctx, verticaldevisions, chart.data[i], maxdata, chart.data[i].stroke, linecord);
@@ -37,7 +26,7 @@ function chartCalling(chart) {
         $('#' + chart.container).css({
             'height': chart.hei + 100
         });
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.wid, chart.hei, chart.container);
         drawGrid(chart.chartnumber, 10, ctx, chart.data);
         var canvas = 'canvas' + chart.chartnumber;
@@ -67,28 +56,18 @@ function chartCalling(chart) {
             'height': chart.hei + 100
         });
         //console.log(chart);
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.wid, chart.hei, chart.container);
-        var verticaldevisions = chart.yaxis.max;
-        //console.log(verticaldevisions);
+        var verticaldevisions = (chart.yaxis.max - chart.yaxis.min) / chart.yaxis.difference;
+        console.log("verticaldevisions" + verticaldevisions);
         var barwidth = drawGrid(chart.chartnumber, verticaldevisions, ctx, chart.data);
+        console.log("barwidth:" + barwidth);
         var canvas = 'canvas' + chart.chartnumber;
-        var maxdata = [];
-        maxdata[0] = maxdata[1] = chart.data[0].datapoints[0].y;
-        for (var i = 0; i < chart.data.length; i++) {
-            for (var j = 0; j < chart.data[i].datapoints.length; j++) {
-                if (chart.data[i].datapoints[j].y < maxdata[0]) {
-                    maxdata[0] = chart.data[i].datapoints[j].y;
-                }
-                if (chart.data[i].datapoints[j].y > maxdata[1]) {
-                    maxdata[1] = chart.data[i].datapoints[j].y;
-                }
-            }
-        }
-        //console.log(maxdata);
+        var maxdata = [chart.yaxis.min, chart.yaxis.max];
+        console.log("maxdata:" + maxdata);
         var linecord = [];
         var nextcurve = 0;
-        var nextcurve = 30;
+        var nextcurve = 60;
         for (var i = 0; i < chart.data.length; i++) {
             drawBar(canvas, ctx, verticaldevisions, chart.data[i], maxdata, nextcurve, chart.data[i].stroke, linecord, barwidth);
             nextcurve += barwidth;
@@ -102,7 +81,7 @@ function chartCalling(chart) {
         $('#' + chart.container).css({
             'height': chart.hei + 100
         });
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.hei, chart.hei, chart.container);
         drawGrid(chart.chartnumber, 10, ctx, chart.data);
         var canvas = 'canvas' + chart.chartnumber;
@@ -131,7 +110,7 @@ function chartCalling(chart) {
         $('#' + chart.container).css({
             'height': chart.hei + 100
         });
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.hei, chart.hei, chart.container);
         drawGrid(chart.chartnumber, 10, ctx, chart.data);
         var canvas = 'canvas' + chart.chartnumber;
@@ -161,7 +140,7 @@ function chartCalling(chart) {
         $('#' + chart.container).css({
             'height': chart.hei + 100
         });
-        $('#' + chart.container).html('<h2>' + chart.title.text + '</h2>');
+        $('#' + chart.container).html('<h2 class="chartTitle">' + chart.title.text + '</h2>');
         var ctx = preparePlot(chart.chartnumber, chart.hei, chart.hei, chart.container);
         drawGrid(chart.chartnumber, 10, ctx, chart.data);
         var canvas = 'canvas' + chart.chartnumber;
@@ -191,11 +170,13 @@ function chartCalling(chart) {
 
 function prepSurface(nr, width, height, container) {
     //var container = document.getElementById(container);
-    $('#' + container).append('<canvas id="canvas' + nr + '" class="canvas" style="position:absolute;" width="' + width + '" height="' + height + '"></canvas>');
+    $('#' + container).append('<canvas id="canvas' + nr + '" class="canvas"' +
+        ' style="position:absolute;" width="' + width + '" height="' + height + '"></canvas> ');
     //document.write();
 }
 
 function prepUI(nr) {
+    console.log(nr);
     var canvas = document.getElementById('canvas' + nr);
     var ctx = canvas.getContext('2d');
     ctx.font = '12px helvetica';
@@ -233,133 +214,92 @@ function preparePlotUpper(nr, sizex, sizey, container) {
 function drawGrid(nr, verticanNr, ctx, data) {
     var canvas = document.getElementById('canvas' + nr);
     var hei = canvas.height - 60;
-    var wid = canvas.width - 30;
-    ctx.strokeStyle = 'rgba(0,0,0,1)';
-    ctx.lineWidth = .5;
+    console.log("canvas height to draw grid lines:" + hei);
+    var wid = canvas.width - 60;
+    console.log("canvas width to draw grid lines:" + wid);
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,0,0,.2)';
+    ctx.fillStyle = "#000";
+    ctx.lineWidth = .3;
     var spacingVertical = hei / verticanNr;
+    console.log("canvas vertical spacings to draw grid lines:" + spacingVertical);
     var spacingHorizontal = wid / data[0].datapoints.length;
+    console.log("canvas horizontal spacings to draw grid lines:" + spacingHorizontal);
     /*console.log(spacingVertical + 20);
      console.log(wid);*/
-
+    var barwidth = 0;
     if (data.length > 1) {
-        var barwidth = (spacingHorizontal - 15) / data.length;
+        barwidth = (spacingHorizontal - 15) / data.length;
     } else {
-        var barwidth = 15;
+        barwidth = 15;
+    }
+    if (barwidth > 15) {
+        barwidth = 15;
     }
     ctx.beginPath();
-    /*Horizontal grid*/
+    /*Vertical grid*/
     for (var i = 0; i < data[0].datapoints.length + 1; i++) {
-        ctx.moveTo(i * spacingHorizontal + 30, hei);
-        ctx.lineTo(i * spacingHorizontal + 30, hei + 15);
+        ctx.moveTo(i * spacingHorizontal + 60, 0);
+        ctx.lineTo(i * spacingHorizontal + 60, hei + 5);
     }
     ctx.stroke();
-    /*Vertical grid*/
+    /*Horizontal grid*/
     for (var i = 0; i < verticanNr + 1; i++) {
-        ctx.moveTo(30, i * spacingVertical);
-        ctx.lineTo(wid + 30, i * spacingVertical);
+        ctx.moveTo(50, i * spacingVertical);
+        ctx.lineTo(wid + 60, i * spacingVertical);
     }
+    ctx.fill();
     ctx.stroke();
     ctx.closePath();
     return barwidth;
 }
 
-function drawGraphicLinear(canvas, ctx, verticalNr, data, range, stroke, linecord) {
+var drawGraphicLinearYcord = function (canvas, ctx, verticalNr, cdata) {
+    console.log(cdata);
     var canvas = document.getElementById(canvas);
     var hei = canvas.height - 60;
-    var wid = canvas.width - 30
+    var wid = canvas.width - 60;
     var spacingVertical = hei / verticalNr;
-    var spacingHorizontal = wid / data.datapoints.length;
-
-    var totalRange = range[1] - range[0];
-    var verticalCoefficient = hei / totalRange;
-    var mov;
-    ctx.strokeStyle = stroke;
-    ctx.beginPath();
-    ctx.moveTo(spacingHorizontal / 2, hei - (data.datapoints[0].y - range[0]) * verticalCoefficient);
-    for (var i = 0; i < data.datapoints.length; i++) {
-        //ctx.beginPath();
-        ctx.strokeStyle = stroke;
-        ctx.lineWidth = 1;
-        ctx.lineTo(i * spacingHorizontal + spacingHorizontal / 2, hei - (data.datapoints[i].y - range[0]) * verticalCoefficient);
-        //ctx.closePath();
-        (function () {
-            ctx.save();
-            ctx.arc(i * spacingHorizontal + spacingHorizontal / 2, hei - (data.datapoints[i].y - range[0]) * verticalCoefficient, 1.5, 0, 2 * Math.PI)
-            //ctx.fill();
-            ctx.lineWidth = 3;
-            ctx.restore();
-        })()
-        ctx.lineWidth = 1;
-        /**/
-        var newobj = {
-            x: i * spacingHorizontal + spacingHorizontal / 2
-            , y: hei - (data.datapoints[i].y - range[0]) * verticalCoefficient
-            , lable: data.datapoints[i].lable
-            , dataval: data.datapoints[i].y
-        };
-        //console.log(newobj);
-        linecord.push(newobj);
-        /*Fill Text as per cordinates*/
-        //ctx.fillText(data.datapoints[i].y, i * spacingHorizontal, hei - (data.datapoints[i].y - range[0]) * verticalCoefficient + spacingVertical);
-    }
-    ctx.stroke();
-    ctx.closePath();
-
-    return linecord;
-}
-function drawGraphicLinearYcord(canvas, ctx, verticalNr, cdata) {
-    //console.log(cdata);
-    var canvas = document.getElementById(canvas);
-    var hei = canvas.height - 60;
-    var wid = canvas.width - 30;
-    var spacingVertical = hei / verticalNr;
-    var spacingHorizontal = wid / cdata.xaxis.categories.length;
+    var spacingHorizontal = wid / cdata.data[0].datapoints.length;
     //console.log(spacingHorizontal);
-
+    ctx.beginPath();
+    ctx.fillStyle = "#000";
     ctx.save();
     ctx.translate(0, canvas.height / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center";
     ctx.fillText(cdata.yaxis.title, 0, 10);
-    ctx.restore();
 
+    ctx.restore();
     /* xaxis Horizontal Documents*/
     ctx.save();
     ctx.font = "12px arial";
-    ctx.fillStyle = "#000";
     var xangle;
-    for (var i = 0; i < cdata.xaxis.categories.length; i++) {
-        if (ctx.measureText(cdata.xaxis.categories[i]).width > spacingHorizontal / 1.1) {
-            xangle = 'a';
+    for (var i = 0; i < cdata.data[0].datapoints.length; i++) {
+        if (ctx.measureText(cdata.data[0].datapoints[i].lable).width > spacingHorizontal / 1.1) {
+            xangle = 'angular';
             /*angular*/
             break;
-        } else if (ctx.measureText(cdata.xaxis.categories[i]).width < spacingHorizontal / 2) {
-            xangle = 'ms';
+        } else if (ctx.measureText(cdata.data[0].datapoints[i].lable).width < spacingHorizontal / 2) {
+            xangle = 'straight';
             /*straight*/
         }
-        /*else{
-         xangle = 's'; medium straight
-         }*/
     }
-    if (xangle === 'a') {
-        for (var i = 0; i < cdata.xaxis.categories.length; i++) {
+    if (xangle === 'angular') {
+        for (var i = 0; i < cdata.data[0].datapoints.length; i++) {
             ctx.translate(i * spacingHorizontal + 32, hei + 8);
             ctx.rotate(Math.PI / 4);
-            ctx.fillText(cdata.xaxis.categories[i], 0, 0);
+            ctx.fillText(cdata.data[0].datapoints[i].lable, 0, 0);
             //console.log(cdata.xaxis.categories[i], i*spacingHorizontal, hei-spacingVertical);
             ctx.rotate(-Math.PI / 4);
             ctx.translate(-(i * spacingHorizontal + 32), -(hei + 8));
         }
-    } else { /*if(xangle === 'ms'){
-     for (var i = 0; i < cdata.xaxis.categories.length; i++) {
-     ctx.fillText(cdata.xaxis.categories[i], i*spacingHorizontal + spacingHorizontal/2 + 30, hei + 15);
-     }
-     }else if(xangle === 's'){*/
-        for (var i = 0; i < cdata.xaxis.categories.length; i++) {
-            ctx.fillText(cdata.xaxis.categories[i], i * spacingHorizontal + 34, hei + 15);
+    } else {
+        for (var i = 0; i < cdata.data[0].datapoints.length; i++) {
+            ctx.fillText(cdata.data[0].datapoints[i].lable, i * spacingHorizontal + 64, hei + 15);
         }
     }
-    ctx.restore();
+    //ctx.restore();
 
     /* yaxis Vertical Documents*/
     ctx.save();
@@ -367,13 +307,14 @@ function drawGraphicLinearYcord(canvas, ctx, verticalNr, cdata) {
         var max = cdata.yaxis.max;
         var min = cdata.yaxis.min;
         var difference = cdata.yaxis.difference;
-        ctx.fillText(i * difference, 10, canvas.height - (i * spacingVertical + 50));
+        ctx.fillText(i * difference, 25, canvas.height - (i * spacingVertical + 50));
     }
-    ctx.restore();
+    //ctx.restore();
+    ctx.closePath();
 
 }
 
-function drawsplinechart(canvas, ctx, verticalNr, data, range, stroke, linecord) {
+var drawsplinechart = function (canvas, ctx, verticalNr, data, range, stroke, linecord) {
     var canvas = document.getElementById(canvas);
     var spacingVertical = canvas.height / verticalNr;
     var spacingHorizontal = canvas.width / data.datapoints.length;
@@ -434,16 +375,10 @@ function drawsplinechart(canvas, ctx, verticalNr, data, range, stroke, linecord)
     return linecord;
 }
 
-function drawupercanvas(nr, ctx, width, height, linecord, container, charttype) {
+var drawupercanvas = function (nr, ctx, width, height, linecord, container, charttype) {
     //var canvasid = document.getElementById('canvasupper'+nr);
+    console.log("linechart linecors : " + linecord);
     if (charttype == 'linechartcomparision') {
-        for (var i = 0; i < linecord.length; i++) {
-            //console.log(linecord[i]);
-            ctx.beginPath();
-            ctx.arc(linecord[i].x, linecord[i].y, 3, 0, 2 * Math.PI);
-            //ctx.fill();
-            //ctx.stroke();
-        }
         document.getElementById('canvasupper' + nr).addEventListener('mousemove', function (evt) {
             ctx.clearRect(0, 0, document.getElementById('canvasupper' + nr).width, document.getElementById('canvasupper' + nr).height);
             var mousePos = getMousePos(document.getElementById('canvasupper' + nr), evt);
@@ -451,10 +386,10 @@ function drawupercanvas(nr, ctx, width, height, linecord, container, charttype) 
             var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
             for (var i = 0; i < linecord.length; i++) {
                 ctx.beginPath();
-                ctx.arc(linecord[i].x, linecord[i].y, 4, 0, 2 * Math.PI);
+                ctx.arc(linecord[i].x, linecord[i].y, 7, 0, 2 * Math.PI);
                 if (ctx.isPointInStroke(mousePos.x, mousePos.y) || ctx.isPointInPath(mousePos.x, mousePos.y)) {
                     ctx.lineWidth = 4;
-                    ctx.strokeStyle = 'rgba(0,0,0,.5)';
+                    ctx.strokeStyle = 'rgba(0,0,0,.7)';
                     ctx.stroke();
                     //ctx.fill();
                     $('#' + container + ' .canvasjs-chart-tooltip').css({
@@ -469,8 +404,10 @@ function drawupercanvas(nr, ctx, width, height, linecord, container, charttype) 
                     ctx.clearRect(0, 0, document.getElementById('canvasupper' + nr).width, document.getElementById('canvasupper' + nr).height);
                     //$('#'+container+' .canvasjs-chart-tooltip').css({'display':'none'});
                 }
+                ctx.closePath();
             }
         }, false);
+
         document.getElementById('canvasupper' + nr).addEventListener('mouseout', function (evt) {
             setTimeout(function () {
                 $('#' + container + ' .canvasjs-chart-tooltip').css({
@@ -638,16 +575,76 @@ function drawupercanvas(nr, ctx, width, height, linecord, container, charttype) 
             }, 2000);
         });
     }
-}
+};
 
-function drawBar(canvas, ctx, verticalNr, data, range, curx, stroke, linecord, barwidth) {
+var drawGraphicLinear = function (canvas, ctx, verticalNr, data, range, stroke, linecord) {
     var canvas = document.getElementById(canvas);
     var hei = canvas.height - 60;
-    var wid = canvas.width - 30;
+    var wid = canvas.width - +60
+    var spacingVertical = hei / verticalNr;
+    console.log("spacingVertical:" + spacingVertical);
+    var spacingHorizontal = wid / data.datapoints.length;
+    console.log("spacingHorizontal:" + spacingHorizontal);
+
+    var totalRange = range[1] - range[0];
+    var verticalCoefficient = hei / totalRange;
+    var mov;
+    ctx.strokeStyle = stroke;
+    ctx.beginPath();
+    var xcord = 60;
+    var ycord = hei - (data.datapoints[0].y - range[0]) * verticalCoefficient;
+    for (var i = 0; i < data.datapoints.length; i++) {
+        console.log(xcord, ycord);
+        ctx.beginPath();
+        ctx.moveTo(xcord + 7, ycord);
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = .6;
+        if (i > 0) {
+            xcord = i * spacingHorizontal + 60;
+            ycord = hei - (data.datapoints[i].y - range[0]) * verticalCoefficient;
+
+            /*Draw line for line chart connecting and end points*/
+            ctx.lineTo(xcord - 5, ycord);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        (function () {
+            /*Draw arc for line chart connecting and end points*/
+            //ctx.save();
+            ctx.beginPath();
+            ctx.lineWidth = 2.5;
+            //ctx.strokeStyle = "red";
+            ctx.arc(xcord, ycord, 7, 0, 2 * Math.PI);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.lineWidth = 3;
+            //ctx.restore();
+        })();
+        ctx.closePath();
+        ctx.lineWidth = 1;
+
+        var newobj = {
+            x: i * spacingHorizontal + 60
+            , y: hei - (data.datapoints[i].y - range[0]) * verticalCoefficient
+            , lable: data.datapoints[i].lable
+            , dataval: data.datapoints[i].y
+        };
+        //console.log(newobj);
+        linecord.push(newobj);
+    }
+    return linecord;
+};
+
+var drawBar = function (canvas, ctx, verticalNr, data, range, curx, stroke, linecord, barwidth) {
+    var canvas = document.getElementById(canvas);
+    var hei = canvas.height - 60;
+    var wid = canvas.width - 60;
     var spacingVertical = hei / verticalNr;
     var spacingHorizontal = wid / data.datapoints.length;
-    /*console.log(spacingHorizontal);
-     console.log(wid);*/
+    console.log("barChart spacingHorizontal :" + spacingHorizontal);
+    console.log("barchart div width :" + wid);
     var totalcompare = data.datapoints.length;
     //var barwidth = 15;
     ctx.beginPath();
@@ -673,8 +670,9 @@ function drawBar(canvas, ctx, verticalNr, data, range, curx, stroke, linecord, b
     }
     ctx.stroke();
     ctx.closePath();
+    console.log(linecord);
     return linecord;
-}
+};
 
 function drawPie(canvas, ctx, verticalNr, data, range, stroke, linecord) {
     var canvas = document.getElementById(canvas);
